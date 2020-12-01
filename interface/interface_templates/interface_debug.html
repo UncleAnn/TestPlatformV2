@@ -1,0 +1,231 @@
+{% include 'base.html' %}
+
+{% block title %}
+<title>接口调试</title>
+{% endblock %}
+
+{% block script %}
+<script src="/interface/interface_static/interface.js"></script>
+{% endblock %}
+{% block style %}
+<style>
+    .choice {
+        width: 80px
+    }
+
+    .action {
+        width: 80px
+    }
+
+    a > .layui-icon {
+        font-size: 30px;
+        color: #FF5722;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="layui-col-lg7">
+    <div class="layui-card" style="margin:10px">
+        <div class="layui-card-header">
+            <h3>接口请求</h3>
+        </div>
+        <div class="layui-card-body">
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <div class="layui-inline" style="width:140px">
+                        <select name="team" id="team" layui-filter="team">
+                            <option value="公共安全产品线" selected>公共安全产品线</option>
+                        </select>
+                    </div>
+                    <div class="layui-inline" style="width:80px">
+                        <select name="product" id="product" layui-filter="product">
+                            <option value="深目">深目</option>
+                            <option value="天图">天图</option>
+                        </select>
+                    </div>
+                    <div class="layui-inline" style="width:120px">
+                        <select name="version" id="version" layui-filter="version">
+                            <option value="2.4.3-hotfix">2.4.3-hotfix</option>
+                        </select>
+                    </div>
+                    <div class="layui-inline" style="width:480px">
+                        <input type="text" id="title" class="layui-input" required
+                               layui-verify="required" placeholder="请输入接口标题">
+                    </div>
+                    <div class="layui-inline">
+                        <input type="button" id="send" value="SEND" class="layui-btn layui-btn-normal action">
+                        <input type="button" id="save" value="SAVE" class="layui-btn layui-btn-warm action">
+                    </div>
+
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline" style="width:100px">
+                        <select name="method" id="method" layui-filter="method">
+                            <option value="GET" selected>GET</option>
+                            <option value="POST">POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="DELETE">DELETE</option>
+                        </select>
+                    </div>
+                    <div class="layui-inline" style="width:600px">
+                        <input type="text" id="url" class="layui-input" required
+                               layui-verify="required" placeholder="请输入接口请求地址">
+                    </div>
+                    <div class="layui-inline layui-btn-group">
+                        <input type="button" id="add-header" value="header" class="layui-btn choice">
+                        <input type="button" id="add-param" value="param" class="layui-btn choice">
+                        <input type="button" id="add-assert" value="assert" class="layui-btn choice">
+                        <input type="button" id="add-extract" value="extract" class="layui-btn choice">
+                    </div>
+                </div>
+
+                <!--                <div class="layui-collapse" lay-accordion>-->
+                <div class="layui-collapse">
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">请求header</h2>
+                        <div class="layui-colla-content" id="headers">
+                            <div class="layui-form-item header-line">
+                                <div class="layui-inline">
+                                    <input type="checkbox" lay-skin="switch" class="header-switch" checked>
+                                </div>
+                                <div class="layui-inline" style="width: 400px">
+                                    <input type="text" class="layui-input header-key" placeholder="请输入header key">
+                                </div>
+                                <div class="layui-inline" style="width: 400px">
+                                    <input type="text" class="layui-input header-value" placeholder="请输入header value">
+                                </div>
+                                <div class="layui-inline">
+                                    <a href="javascript:">
+                                        <i class="layui-icon del-header">&#x1007</i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">请求Parameters</h2>
+                        <div class="layui-colla-content" id="parameters">
+                            <div class="layui-form-item param-line">
+                                <div class="layui-inline">
+                                    <input type="checkbox" lay-skin="switch" class="param-switch" checked>
+                                </div>
+                                <div class="layui-inline" style="width: 80px">
+                                    <select name="param-type" class="param-type" lay-filter="param-type">
+                                        <option value="param" selected>参数</option>
+                                        <option value="file">文件</option>
+                                    </select>
+                                </div>
+                                <div class="layui-inline" style="width: 400px">
+                                    <input type="text" class="layui-input param-key" placeholder="请输入parameter key">
+                                </div>
+                                <div class="layui-inline" style="width: 400px">
+                                    <input type="text" class="layui-input param-value" placeholder="请输入parameter value">
+                                </div>
+                                <div class="layui-inline">
+                                    <a href="javascript:"><i class="layui-icon del-param">&#x1007</i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">响应断言Assert</h2>
+                        <div class="layui-colla-content" id="assert">
+                            <div class="layui-form-item param-line">
+                                <div class="layui-form-item assert-line">
+                                    <div class="layui-inline">
+                                        <input type="checkbox" lay-skin="switch" class="assert-switch" checked>
+                                    </div>
+                                    <div class="layui-inline" style="width: 100px">
+                                        <select name="assert-type" class="assert-type" lay-filter="assert-type">
+                                            <option value="status_code">状态码</option>
+                                            <option value="response_body" selected>响应体</option>
+                                        </select>
+                                    </div>
+                                    <div class="layui-inline" style="width: 300px">
+                                        <input type="text" class="layui-input assert-expr" lay-verify="required"
+                                               placeholder="请输入断言表达式">
+                                    </div>
+                                    <div class="layui-inline" style="width: 100px">
+                                        <select name="assert-type" class="assert-condition">
+                                            <option value="equal" selected>==</option>
+                                            <option value="not_equal">!=</option>
+                                            <option value="greater_equal">>=</option>
+                                            <option value="lower_equal"><=</option>
+                                            <option value="greater">></option>
+                                            <option value="lower"><</option>
+                                            <option value="contain">包含</option>
+                                            <option value="not_contain">不包含</option>
+                                        </select>
+                                    </div>
+                                    <div class="layui-inline" style="width: 200px">
+                                        <input type="text" class="layui-input assert-value" lay-verify="required"
+                                               placeholder="请输入预期值">
+                                    </div>
+                                    <div class="layui-inline">
+                                        <a href="javascript:"><i class="layui-icon del-assert">&#x1007</i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">变量提取Extract</h2>
+                        <div class="layui-colla-content" id="extract">
+                            <div class="layui-form-item extract-line">
+                                <div class="layui-inline">
+                                    <input type="checkbox" class="extract-switch" lay-skin="switch" checked>
+                                </div>
+                                <div class="layui-inline" style="width: 400px">
+                                    <input type="text" class="layui-input extract-name" layui-verify="required"
+                                           placeholder="请输入变量名">
+                                </div>
+                                <div class="layui-inline" style="width: 400px">
+                                    <input type="text" class="layui-input extract-expr" layui-verify="required"
+                                           placeholder="请输入变量提取表达式">
+                                </div>
+                                <div class="layui-inline">
+                                    <a href="javascript:"><i class="layui-icon del-extract">&#x1007</i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="layui-col-lg5">
+    <div class="layui-card" style="margin:10px">
+        <div class="layui-card-header">
+            <h3>接口响应</h3>
+        </div>
+        <div class="layui-card-body"></div>
+    </div>
+</div>
+<script>
+    layui.use(['form'], function () {
+        let form = layui.form;
+        let element = layui.element;
+        let layer = layui.layer;
+
+        // 元素操作部分
+        switchAssertType(form);
+        addHeaderLine(form);
+        delHeaderLine();
+        addParamLine(form);
+        delParamLine();
+        addAssertLine(form);
+        delAssertLine();
+        addExtractLine(form);
+        delExtractLine();
+
+        // 数据交互部分
+        send();
+
+    });
+
+
+</script>
+{% endblock %}
