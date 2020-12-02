@@ -21,6 +21,10 @@
         font-size: 30px;
         color: #FF5722;
     }
+    .result>i {
+        font-size: 40px;
+    }
+
 </style>
 {% endblock %}
 
@@ -166,6 +170,8 @@
                                     <div class="layui-inline">
                                         <a href="javascript:"><i class="layui-icon del-assert">&#x1007</i></a>
                                     </div>
+<!--                                    <div class="layui-inline result">-->
+                                    <div class="layui-inline result" style="display:none"></div>
                                 </div>
                             </div>
                         </div>
@@ -201,7 +207,9 @@
         <div class="layui-card-header">
             <h3>接口响应</h3>
         </div>
-        <div class="layui-card-body"></div>
+        <div class="layui-card-body">
+            <div id="response"></div>
+        </div>
     </div>
 </div>
 <script>
@@ -222,7 +230,8 @@
         delExtractLine();
 
         // 数据交互部分
-        send();
+        send(layer);
+        // save(layer);
 
     });
 

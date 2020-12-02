@@ -145,6 +145,7 @@ function addAssertLine(form) {
             '    <div class="layui-inline">\n' +
             '        <a href="javascript:"><i class="layui-icon del-assert">&#x1007</i></a>\n' +
             '    </div>\n' +
+            '    <div class="layui-inline result" style="display:none"></div>' +
             '</div>';
         let dom = $('#assert');
         dom.append(html);
@@ -206,21 +207,21 @@ function addExtractLine(form) {
     $('#add-extract').on('click', function () {
         let html = '';
         html += '<div class="layui-form-item extract-line">\n' +
-            '    <div class="layui-inline">\n' +
-            '        <input type="checkbox" class="extract-switch" lay-skin="switch" checked>\n' +
-            '    </div>\n' +
-            '    <div class="layui-inline" style="width: 400px">\n' +
-            '        <input type="text" class="layui-input extract-name" layui-verify="required"\n' +
-            '               placeholder="请输入变量名">\n' +
-            '    </div>\n' +
-            '    <div class="layui-inline" style="width: 400px">\n' +
-            '        <input type="text" class="layui-input extract-expr" layui-verify="required"\n' +
-            '               placeholder="请输入变量提取表达式">\n' +
-            '    </div>\n' +
-            '    <div class="layui-inline">\n' +
-            '        <a href="javascript:"><i class="layui-icon del-extract">&#x1007</i></a>\n' +
-            '    </div>\n' +
-            '</div>';
+                '    <div class="layui-inline">\n' +
+                '        <input type="checkbox" class="extract-switch" lay-skin="switch" checked>\n' +
+                '    </div>\n' +
+                '    <div class="layui-inline" style="width: 400px">\n' +
+                '        <input type="text" class="layui-input extract-name" layui-verify="required"\n' +
+                '               placeholder="请输入变量名">\n' +
+                '    </div>\n' +
+                '    <div class="layui-inline" style="width: 400px">\n' +
+                '        <input type="text" class="layui-input extract-expr" layui-verify="required"\n' +
+                '               placeholder="请输入变量提取表达式">\n' +
+                '    </div>\n' +
+                '    <div class="layui-inline">\n' +
+                '        <a href="javascript:"><i class="layui-icon del-extract">&#x1007</i></a>\n' +
+                '    </div>\n' +
+                '</div>';
         let dom = $('#extract');
         dom.append(html);
         form.render();
@@ -229,6 +230,25 @@ function addExtractLine(form) {
             $('h2').eq(3).click();
         }
     })
+}
+
+function getExtractInfo() {
+    let extract = [];
+    let dom = $('.extract-line');
+
+    dom.each(function (index, element) {
+        if ($('.extract-switch').eq(index).attr('checked')) {
+            let name = $('.extract-name').eq(index).val();
+            if (name !== '') {
+                let extract_item = {
+                    'name': name,
+                    'expression': $('.extract-expr').eq(index).val()
+                };
+                extract.push(extract_item);
+            }
+        }
+    });
+    return extract
 }
 
 function delExtractLine() {
@@ -245,13 +265,75 @@ function send() {
             'team': $('#team').val(),
             'product': $('#product').val(),
             'version': $('#version').val(),
-            'title': $('#title').val(),
-            'method': $('#method').val(),
-            'url': $('#url').val()
+            'title': $('#title').val()
         };
+        let url = $('#url').val();
+        if (url === '') {
+            layer.msg('请输入请求地址！');
+            return
+        }
         // 获取请求参数详情
+        data['url'] = url;
+        data['method'] = $('#method').val();
         data['headers'] = getHeaderInfo();
         data['params'] = getParamInfo();
         data['assert'] = getAssertInfo();
+        data['extract'] = getExtractInfo();
+        // 发送请求
+        http('/interface/api/v1/send_request', 'post', data, function (response) {
+            layer.msg(response['message']);
+            // 显示接口测试响应数据
+            let responseHtml = '<pre><code>' +
+                JSON.stringify(response['data']['response']['data'], null, 4) +
+                '</code></pre>';
+            $('#response').html(responseHtml);
+            // 标记断言结果
+            let dom = $('.result');
+            dom.each(function (index, element) {
+                let resultHtml = '<label class="layui-form-label">测试结果：</label>';
+                if (response['data']['assert'][index]['result']) {
+                    resultHtml += '<i class="layui-icon layui-icon-ok" style="color:#5FB878"></i>';
+                } else {
+                    resultHtml += '<i class="layui-icon layui-icon-close" style="color:#FF5722"></i>'
+                }
+                dom.eq(index).html(resultHtml);
+            });
+            dom.show();
+        }, function (response) {
+            console.log(response);
+            layer.msg(response['message'])
+        });
+    })
+}
+
+function save() {
+    $('#send').on('click', function () {
+        // 获取基础数据
+        let data = {
+            'team': $('#team').val(),
+            'product': $('#product').val(),
+            'version': $('#version').val(),
+            'title': $('#title').val()
+        };
+        let url = $('#url').val();
+        if (url === '') {
+            layer.msg('请输入请求地址！');
+            return
+        }
+        // 获取请求参数详情
+        data['url'] = url;
+        data['method'] = $('#method').val();
+        data['headers'] = getHeaderInfo();
+        data['params'] = getParamInfo();
+        data['assert'] = getAssertInfo();
+        data['extract'] = getExtractInfo();
+        // 发送请求
+        http('/interface/save_request', 'post', data, function (response) {
+            console.log(response);
+            layer.msg(response['message'])
+        }, function (response) {
+            console.log(response);
+            layer.msg(response['message'])
+        });
     })
 }

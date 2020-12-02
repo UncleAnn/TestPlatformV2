@@ -25,5 +25,17 @@ function setBreadcrumb(breadcrumb1, breadcrumb2) {
         $('#breadcrumb1').text(breadcrumb1);
         $('#breadcrumb2').text(breadcrumb2);
     });
+}
 
+function http(url, method, data, success, error) {
+    data = method === 'get' ? data: JSON.stringify(data);
+    $.ajax({
+        url: url,
+        type: method,
+        contentType: 'application/json;charset-UTF-8',
+        dataType: 'json',
+        data: data,
+        success: success,
+        error: error
+    })
 }
