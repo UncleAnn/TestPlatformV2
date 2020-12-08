@@ -4,6 +4,7 @@ import pymongo
 from flask import Blueprint, render_template, jsonify, request
 from config import MONGODB
 from interface.compare import Compare
+from common import generate_id
 
 interface = Blueprint('interface', __name__, static_folder='interface_static', template_folder='interface_templates')
 
@@ -11,6 +12,26 @@ interface = Blueprint('interface', __name__, static_folder='interface_static', t
 @interface.route('/debug')
 def page_debug():
     return render_template('interface_debug.html')
+
+
+@interface.route('/edit/<id>')
+def edit_page(id):
+    return render_template('interface_edit.html')
+
+
+@interface.route('/api/v1/load_api', methods=['POST'])
+def load_api():
+    data = request.get_json()
+    print(data)
+    mongo_client = pymongo.MongoClient(MONGODB, 27017)
+    mongo_db = mongo_client.get_database('interface')
+    mongo_collection = mongo_db.get_collection('api')
+    api = mongo_collection.find_one(data)
+    return jsonify({
+        'status_code': 200,
+        'message': 'ok',
+        'data': api
+    })
 
 
 @interface.route('/api_list')
@@ -26,17 +47,6 @@ def page_suite_list():
 @interface.route('/report')
 def page_report():
     return render_template('interface_report.html')
-
-
-@interface.route('/api/v1/save_request', methods=['POST'])
-def save_request():
-    data = request.get_json()
-    print(data)
-    return jsonify({
-        'status_code': 200,
-        'message': '保存成功！',
-        'data': data
-    })
 
 
 @interface.route('/api/v1/send_request', methods=['POST'])
@@ -61,9 +71,8 @@ def send_request():
         'data': response.json()
     }
     # TODO: 断言
+    comp = Compare()
     for assert_item in data['assert']:
-        compare = Compare()
-        print(assert_item)
         # 断言状态码，只做相等判断
         if assert_item['type'] == 'status_code':
             assert_item['result'] = assert_item['value'] == str(response.status_code)
@@ -80,11 +89,10 @@ def send_request():
                     # 优先使用key
                     try:
                         actual = actual[str(part)]
-                    # key出错，使用索引
+                    # 使用key出错，使用索引
                     except:
                         actual = actual[int(part)]
-            print(str(actual), assert_item['value'])
-            func = getattr(compare, assert_item['condition'])
+            func = getattr(comp, assert_item['condition'])
             assert_item.setdefault('result', func(str(actual), assert_item['value']))
     # TODO: 变量提取
     return jsonify({
@@ -100,11 +108,19 @@ latitude=31.315590522490712
 longitude=121.04925573429551
 """
 
-#
-# @interface.route('/api/v1/save_request', methods=['POST'])
-# def save_request():
-#     data = request.get_json()
-#     print(data)
-#     mongo_client = pymongo.MongoClient(MONGODB, 27017)
-#     mongo_db = mongo_client.get_database('interface')
-#     mongo_collection = mongo_db.get_collection('api')
+
+@interface.route('/api/v1/save_request', methods=['POST'])
+def save_request():
+    data = request.get_json()
+    print(data)
+    mongo_client = pymongo.MongoClient(MONGODB, 27017)
+    mongo_db = mongo_client.get_database('interface')
+    mongo_collection = mongo_db.get_collection('api')
+    data['_id'] = 'api_' + generate_id()
+    mongo_collection.insert_one(data)
+    mongo_client.close()
+    return jsonify({
+        'status_code': 200,
+        'message': '保存成功！',
+        'data': data['_id']
+    })

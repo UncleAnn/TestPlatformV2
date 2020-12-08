@@ -2,19 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    {% block title %}
-    {% endblock %}
+    <title>{% block title %}{% endblock %}</title>
     <!--    本地引入layui，配合使用layui-soul-table-->
     <link rel="stylesheet" href="/static/layui/css/layui.css">
     <script src="/static/layui/layui.js"></script>
     <!--    引入layui-soul-table-->
     <script src="/static/ext/soulTable.js"></script>
-    {% block style %}
-    {% endblock %}
+    {% block style %} {% endblock %}
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/static/common.js"></script>
-    {% block script %}
-    {% endblock %}
+    {% block script %} {% endblock %}
 </head>
 <body class="layui-bg-gray">
 {% include 'header.html' %}
@@ -29,18 +26,8 @@
     {% block content %}
     {% endblock %}
 </div>
-<script>
-    layui.use(['element', 'layer'], function () {
-        let element = layui.element;
-        let layer = layui.layer;
-        // 监听导航点击
-        element.on('nav(side)', function (elem) {
-            layer.msg(elem.text())
-        });
-        // 设置侧边栏选中效果
-        setBreadcrumb('接口测试', '接口调试');
-    });
-</script>
+{% block script_body %}
+{% endblock %}
 </body>
 </html>
 

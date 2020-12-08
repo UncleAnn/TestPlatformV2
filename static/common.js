@@ -4,11 +4,11 @@
 function GetUrlRelativePath() {
     let url = document.location.toString();
     console.log(url);
-    let arryUrl = url.split('//');
-    console.log(arryUrl);
+    let arrayUrl = url.split('//');
+    console.log(arrayUrl);
     // 获取目标字符串
-    let startIndex = arryUrl[1].indexOf("/");
-    let resultUrl = arryUrl[1].substring(startIndex) // stop省略
+    let startIndex = arrayUrl[1].indexOf("/");
+    let resultUrl = arrayUrl[1].substring(startIndex); // stop省略
     // 剔除？后面的参数
     if (resultUrl.indexOf("?") !== -1) {
         resultUrl = resultUrl.split("?")[0]

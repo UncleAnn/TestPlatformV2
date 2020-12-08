@@ -1,32 +1,29 @@
-{% include 'base.html' %}
+{% extends 'base.html' %}
 
-{% block title %}
-<title>接口调试</title>
-{% endblock %}
 
 {% block script %}
-<script src="/interface/interface_static/interface.js"></script>
+    <script src="/interface/interface_static/interface.js"></script>
 {% endblock %}
 {% block style %}
-<style>
-    .choice {
-        width: 80px
-    }
+    <style>
+        .choice {
+            width: 80px
+        }
 
-    .action {
-        width: 80px
-    }
+        .action {
+            width: 80px
+        }
 
-    a > .layui-icon {
-        font-size: 30px;
-        color: #FF5722;
-    }
+        a > .layui-icon {
+            font-size: 30px;
+            color: #FF5722;
+        }
 
-    .result > i {
-        font-size: 40px;
-    }
+        .result > i {
+            font-size: 40px;
+        }
 
-</style>
+    </style>
 {% endblock %}
 
 
@@ -40,13 +37,13 @@
             <form class="layui-form" lay-filter="form">
                 <div class="layui-form-item">
                     <div class="layui-inline" style="width:140px">
-                        <select name="team" id="team" layui-filter="team"></select>
+                        <select name="team" id="team" lay-filter="team"></select>
                     </div>
                     <div class="layui-inline" style="width:80px">
-                        <select name="product" id="product" layui-filter="product"></select>
+                        <select name="product" id="product" lay-filter="product"></select>
                     </div>
                     <div class="layui-inline" style="width:120px">
-                        <select name="version" id="version" layui-filter="version">
+                        <select name="version" id="version" lay-filter="version">
                         </select>
                     </div>
                     <div class="layui-inline" style="width:480px">
@@ -79,8 +76,6 @@
                         <input type="button" id="add-extract" value="extract" class="layui-btn choice">
                     </div>
                 </div>
-
-                <!--                <div class="layui-collapse" lay-accordion>-->
                 <div class="layui-collapse">
                     <div class="layui-colla-item">
                         <h2 class="layui-colla-title">请求header</h2>
@@ -207,41 +202,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block script_body %}
-<script>
-    layui.use(['form'], function () {
-        let form = layui.form;
-        let element = layui.element;
-        let layer = layui.layer;
-
-        // 页面初始化部分
-        init_version(form);
-        // 监听team下拉框
-        // form.on('select(team)', function (data) {
-        //     let team = data.value;
-        //
-        // })
-
-        // 元素操作部分
-        switchAssertType(form);
-        addHeaderLine(form);
-        delHeaderLine();
-        addParamLine(form);
-        delParamLine();
-        addAssertLine(form);
-        delAssertLine();
-        addExtractLine(form);
-        delExtractLine();
-
-
-        // 数据交互部分
-        send(layer);
-        save(layer);
-
-    });
-
-
-</script>
 {% endblock %}

@@ -1,13 +1,15 @@
 {% extends 'interface_api.html' %}
-{% block title %}接口调试{% endblock %}
+{% block title %}接口编辑{% endblock %}
 {% block script_body %}
 <script>
     layui.use(['form', 'element', 'layer'], function () {
         let form = layui.form;
         let element = layui.element;
         let layer = layui.layer;
-        setBreadcrumb('接口测试', '接口调试');
+        setBreadcrumb('接口测试', '接口编辑');
         debug_page(form, layer, element);
+        // 加载api信息
+        load_interface(form);
     });
 </script>
 {% endblock %}

@@ -1,3 +1,97 @@
+function init_version(form) {
+    // 初始化部门
+    renderTeamSelect(form);
+    // 初始化产品
+    let args = {'team': $('#team').val()};
+    console.log(args);
+    renderProductSelect(args, form);
+    // 初始化版本
+    args['product'] = $('#product').val();
+    console.log(args);
+
+    renderVersionSelect(args, form);
+}
+
+function renderTeamSelect(form) {
+    http('/information/team', 'get', null, function (response) {
+            let teamData = response['data'];
+            let html = '';
+            for (let i in teamData) {
+                if (teamData.hasOwnProperty(i)) {
+                    let team = teamData[i];
+                    html += `<option value="${team}">${team}</option>`
+                }
+            }
+            // 设置选中值
+            form.val('form', {'team': teamData[0]});
+            let teamDom = $('#team');
+            teamDom.html(html);
+            form.render();
+        }, function (response) {
+            console.log(response);
+        }
+    )
+}
+
+
+function renderVersionSelect(args, form) {
+    // 拼接版本号
+    http('/information/version', 'get', args, function (response) {
+        let versionData = response['data'];
+        console.log(versionData);
+        let html = '';
+        for (let i in versionData) {
+            if (versionData.hasOwnProperty(i)) {
+                let version = versionData[i]['version'];
+                html += `<option value="${version}">${version}</option>`
+            }
+        }
+        let versionDom = $('#version');
+        versionDom.html(html);
+        form.render();
+    }, function (response) {
+        console.log(response);
+    })
+}
+
+function listenTeam(form) {
+    form.on('select(team)', function (data) {
+        let args = {'team': data.value};
+        renderProductSelect(args, form);
+    })
+}
+
+function listenProduct(form) {
+    form.on('select(product)', function (data) {
+        let args = {
+            'team': $('#team').val(),
+            'product': data.value
+        };
+        getVersion(args, form);
+    })
+}
+
+function renderProductSelect(args, form) {
+    http('/information/product', 'get', args, function (response) {
+        let productData = response['data'];
+        let html = '';
+        for (let i in productData) {
+            if (productData.hasOwnProperty(i)) {
+                let product = productData[i];
+                html += `<option value="${product}">${product}</option>`;
+            }
+        }
+        let productDom = $('#product');
+        productDom.html(html);
+        form.render();
+        args['product'] = productDom.val();
+        // 拼接版本号
+        getVersion(args, form);
+    }, function (response) {
+        console.log(response);
+    });
+}
+
 function addHeaderLine(form) {
     $('#add-header').on('click', function () {
         let html = '';
@@ -42,6 +136,47 @@ function getHeaderInfo() {
         }
     });
     return headers;
+}
+
+function loadHeaders(headers, form) {
+    if (Object.keys(headers).length !== 0) {
+        // 补齐headers行数
+        let html = '';
+        let dom = $('#headers');
+        for (let i = 1; i < Object.keys(headers).length; i++) {
+            html += '<div class="layui-form-item header-line">' +
+                '       <div class="layui-inline">' +
+                '           <input type="checkbox" lay-skin="switch" class="header-switch" checked>' +
+                '       </div>' +
+                '       <div class="layui-inline" style="width: 400px">' +
+                '           <input type="text" class="layui-input header-key" placeholder="请输入header key">' +
+                '       </div>' +
+                '       <div class="layui-inline" style="width: 400px">' +
+                '           <input type="text" class="layui-input header-value" placeholder="请输入header value">' +
+                '       </div>' +
+                '       <div class="layui-inline">' +
+                '           <a href="javascript:">\n' +
+                '               <i class="layui-icon del-header" style="font-size: 30px; color: #FF5722;">&#x1007</i>\n' +
+                '           </a>' +
+                '       </div>' +
+                '   </div>';
+        }
+        dom.append(html);
+        form.render();
+        // 加载headers信息
+        let i = 0;
+        for (let key in headers) {
+            if (headers.hasOwnProperty(key)) {
+                $('.header-key').eq(i).val(key);
+                $('.header-value').eq(i).val(headers[key])
+            }
+            i++;
+        }
+        let flag = dom.hasClass('layui-show');
+        if (!flag) {
+            $('h2').eq(0).click();
+        }
+    }
 }
 
 function delHeaderLine() {
@@ -207,21 +342,21 @@ function addExtractLine(form) {
     $('#add-extract').on('click', function () {
         let html = '';
         html += '<div class="layui-form-item extract-line">\n' +
-                '    <div class="layui-inline">\n' +
-                '        <input type="checkbox" class="extract-switch" lay-skin="switch" checked>\n' +
-                '    </div>\n' +
-                '    <div class="layui-inline" style="width: 400px">\n' +
-                '        <input type="text" class="layui-input extract-name" layui-verify="required"\n' +
-                '               placeholder="请输入变量名">\n' +
-                '    </div>\n' +
-                '    <div class="layui-inline" style="width: 400px">\n' +
-                '        <input type="text" class="layui-input extract-expr" layui-verify="required"\n' +
-                '               placeholder="请输入变量提取表达式">\n' +
-                '    </div>\n' +
-                '    <div class="layui-inline">\n' +
-                '        <a href="javascript:"><i class="layui-icon del-extract">&#x1007</i></a>\n' +
-                '    </div>\n' +
-                '</div>';
+            '    <div class="layui-inline">\n' +
+            '        <input type="checkbox" class="extract-switch" lay-skin="switch" checked>\n' +
+            '    </div>\n' +
+            '    <div class="layui-inline" style="width: 400px">\n' +
+            '        <input type="text" class="layui-input extract-name" layui-verify="required"\n' +
+            '               placeholder="请输入变量名">\n' +
+            '    </div>\n' +
+            '    <div class="layui-inline" style="width: 400px">\n' +
+            '        <input type="text" class="layui-input extract-expr" layui-verify="required"\n' +
+            '               placeholder="请输入变量提取表达式">\n' +
+            '    </div>\n' +
+            '    <div class="layui-inline">\n' +
+            '        <a href="javascript:"><i class="layui-icon del-extract">&#x1007</i></a>\n' +
+            '    </div>\n' +
+            '</div>';
         let dom = $('#extract');
         dom.append(html);
         form.render();
@@ -258,27 +393,32 @@ function delExtractLine() {
     })
 }
 
+function getAllInfo() {
+    // 获取基础数据
+    let data = {
+        'team': $('#team').val(),
+        'product': $('#product').val(),
+        'version': $('#version').val(),
+        'title': $('#title').val(),
+        'url': $('#url').val()
+    };
+    // 获取请求参数详情
+    data['method'] = $('#method').val();
+    data['headers'] = getHeaderInfo();
+    data['params'] = getParamInfo();
+    data['assert'] = getAssertInfo();
+    data['extract'] = getExtractInfo();
+    // return
+    return data
+}
+
 function send() {
     $('#send').on('click', function () {
-        // 获取基础数据
-        let data = {
-            'team': $('#team').val(),
-            'product': $('#product').val(),
-            'version': $('#version').val(),
-            'title': $('#title').val()
-        };
-        let url = $('#url').val();
-        if (url === '') {
-            layer.msg('请输入请求地址！');
+        if ($('#url').val() === '') {
+            layer.msg('请输入【请求地址】！');
             return
         }
-        // 获取请求参数详情
-        data['url'] = url;
-        data['method'] = $('#method').val();
-        data['headers'] = getHeaderInfo();
-        data['params'] = getParamInfo();
-        data['assert'] = getAssertInfo();
-        data['extract'] = getExtractInfo();
+        let data = getAllInfo();
         // 发送请求
         http('/interface/api/v1/send_request', 'post', data, function (response) {
             layer.msg(response['message']);
@@ -288,17 +428,20 @@ function send() {
                 '</code></pre>';
             $('#response').html(responseHtml);
             // 标记断言结果
-            let dom = $('.result');
-            dom.each(function (index, element) {
-                let resultHtml = '<label class="layui-form-label">测试结果：</label>';
-                if (response['data']['assert'][index]['result']) {
-                    resultHtml += '<i class="layui-icon layui-icon-ok" style="color:#5FB878"></i>';
-                } else {
-                    resultHtml += '<i class="layui-icon layui-icon-close" style="color:#FF5722"></i>'
-                }
-                dom.eq(index).html(resultHtml);
-            });
-            dom.show();
+            if (response['data']['assert'].length !== 0) {
+                let dom = $('.result');
+                dom.empty();
+                dom.each(function (index, element) {
+                    let resultHtml = '<label class="layui-form-label">测试结果：</label>';
+                    if (response['data']['assert'][index]['result']) {
+                        resultHtml += '<i class="layui-icon layui-icon-ok" style="color:#5FB878"></i>';
+                    } else {
+                        resultHtml += '<i class="layui-icon layui-icon-close" style="color:#FF5722"></i>'
+                    }
+                    dom.eq(index).html(resultHtml);
+                });
+                dom.show();
+            }
         }, function (response) {
             console.log(response);
             layer.msg(response['message'])
@@ -306,34 +449,74 @@ function send() {
     })
 }
 
-function save() {
-    $('#send').on('click', function () {
-        // 获取基础数据
-        let data = {
-            'team': $('#team').val(),
-            'product': $('#product').val(),
-            'version': $('#version').val(),
-            'title': $('#title').val()
-        };
-        let url = $('#url').val();
-        if (url === '') {
-            layer.msg('请输入请求地址！');
-            return
+function save(layer) {
+    $('#save').on('click', function () {
+        let title = $('#title').val();
+        if (title === '') {
+            layer.msg('保存接口信息需要请输入【接口标题】！')
         }
-        // 获取请求参数详情
-        data['url'] = url;
-        data['method'] = $('#method').val();
-        data['headers'] = getHeaderInfo();
-        data['params'] = getParamInfo();
-        data['assert'] = getAssertInfo();
-        data['extract'] = getExtractInfo();
+        let data = getAllInfo();
+        // 判断是新增还是修改后保存
+
         // 发送请求
-        http('/interface/save_request', 'post', data, function (response) {
+        http('/interface/api/v1/save_request', 'post', data, function (response) {
             console.log(response);
-            layer.msg(response['message'])
+            layer.msg(response['message']);
         }, function (response) {
             console.log(response);
             layer.msg(response['message'])
         });
     })
+}
+
+function load_interface(form) {
+    // 从url获取要读取的api id
+    let path = window.location.pathname;
+    let pathNameList = path.split('/');
+    let id = pathNameList[pathNameList.length - 1];
+    // 请求api信息并加载到页面
+    http('/interface/api/v1/load_api', 'post', {'_id': id},
+        function (response) {
+            let info = response['data'];
+            // 加载基础信息
+            // TODO: 待解决，如何在页面初始化之后
+            form.val('form', {'team': info['team']});
+            renderProductSelect({'team': info['team']}, form);
+            form.val('form', {'product': info['product']});
+            getVersion({'team': info['team'], 'product': info['version']}, form);
+            form.val('form', {'version': info['version']});
+            // 加载接口信息
+            $('#title').val(info['title']);
+            $('#url').val(info['url']);
+            form.render();
+            // 加载headers
+            loadHeaders(info['headers'], form);
+        }, function (response) {
+            console.log(response);
+        }
+    );
+};
+
+function debug_page(form, layer, element) {
+    // 监听导航点击
+    element.on('nav(side)', function (elem) {
+    });
+    // 页面初始化部分
+    init_version(form);
+    // 监听team、product下拉框
+    listenTeam(form);
+    listenProduct(form);
+    // 元素操作部分
+    switchAssertType(form);
+    addHeaderLine(form);
+    delHeaderLine();
+    addParamLine(form);
+    delParamLine();
+    addAssertLine(form);
+    delAssertLine();
+    addExtractLine(form);
+    delExtractLine();
+    // 数据交互部分
+    send(layer);
+    save(layer);
 }

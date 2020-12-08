@@ -1,9 +1,11 @@
 from flask import Flask, redirect, render_template, url_for
 from interface import interface
+from information import information
 from assist import assist
 
 app = Flask(__name__)
 app.register_blueprint(interface, url_prefix='/interface')
+app.register_blueprint(information, url_prefix='/information')
 app.register_blueprint(assist, url_prefix='/assist')
 
 
