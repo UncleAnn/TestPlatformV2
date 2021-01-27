@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}关键字调试{% endblock %}
+
+{% block script %}
+<script src="https://cdn.bootcdn.net/ajax/libs/ace/1.4.7/ace.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/ace/1.4.7/mode-json.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/ace/1.4.7/mode-python.js"></script>
+{% endblock %}
+
+{% block style %}
+
+{% endblock %}
+
+{% block content %}
+<div class="layui-col-lg6">
+    <div class="layui-card" style="margin: 10px">
+        <div class="layui-card-header">
+            <h3>Python关键字</h3>
+        </div>
+        <div class="layui-card-body">
+            <div id="keyword" style="height:750px"></div>
+        </div>
+    </div>
+</div>
+<div class="layui-col-lg5">
+    <div class="layui-card" style="margin: 10px">
+        <div class="layui-card-header">
+            <h3>Json数据</h3>
+        </div>
+        <div class="layui-card-body">
+            <div id="mock" style="height:750px"></div>
+        </div>
+    </div>
+</div>
+<div class="layui-col-lg1">
+    <div style="margin: 10px">
+        <input type="button" id="debug" class="layui-btn layui-btn-normal" value="调 试" style="width: 80px">
+    </div>
+    <div style="margin: 10px">
+        <input type="button" id="save" class="layui-btn layui-btn-normal" value="保 存" style="width: 80px">
+    </div>
+</div>
+{% endblock %}
+
+{% block script_body %}
+<script>
+    setBreadcrumb('测试辅助', '关键字调试');
+
+    // 实例化一个编辑器对象，获取内容用 getValue()方法
+    let keyword = ace.edit('keyword');
+    // 设置皮肤
+    keyword.setTheme('ace/theme/monokai');
+    // 设置编辑器的代码模式为python
+    keyword.getSession().setMode('ace/mode/python');
+    // 设置是否可折叠
+    keyword.getSession().setUseWrapMode(true);
+    // 设置字体大小
+    keyword.setFontSize(18);
+
+    let mock = ace.edit('mock');
+    mock.setTheme('ace/theme/monokai');
+    mock.getSession().setMode('ace/mode/json');
+    mock.getSession().setUseWrapMode(true);
+    mock.setFontSize(18);
+
+    $('#debug').on('click', function () {
+        let data = {
+            'snippet': keyword.getValue(),
+            'mock_data': mock.getValue()
+        };
+        http('/assist/api/v1/keyword_debug', 'post', data, function (response) {
+            console.log(response);
+            alert(response['data'])
+        }, function (response) {
+            console.log(response);
+        })
+    })
+</script>
+{% endblock %}

@@ -1,1 +1,1 @@
-MONGODB = 'localhost'
+MONGO_IP = 'localhost'

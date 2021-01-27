@@ -7,7 +7,24 @@
         let element = layui.element;
         let layer = layui.layer;
         setBreadcrumb('接口测试', '接口调试');
-        debug_page(form, layer, element);
+        load_version_select(form);
+        common_page(form, layer, element);
+        // TODO：新增功能
+        $('#save').on('click', function () {
+            let title = $('#title').val();
+            if (title === '') {
+                layer.msg('请输入【接口标题】！');
+            }
+            let data = getAllInfo();
+            // 发送请求
+            http('/interface/api/v1/save_request', 'post', data, function (response) {
+                console.log(response);
+                layer.msg(response['message']);
+            }, function (response) {
+                console.log(response);
+                layer.msg(response['message']);
+            });
+        });
     });
 </script>
 {% endblock %}

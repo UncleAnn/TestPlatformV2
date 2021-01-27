@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, url_for
+from flask import Flask, redirect, url_for
 from interface import interface
 from information import information
 from assist import assist
@@ -15,4 +15,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', debug=True)
+    app.run('127.0.0.1', debug=True, port=23333)

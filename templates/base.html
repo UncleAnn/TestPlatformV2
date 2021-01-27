@@ -9,6 +9,7 @@
     <!--    引入layui-soul-table-->
     <script src="/static/ext/soulTable.js"></script>
     {% block style %} {% endblock %}
+    <!--    引入jquery-->
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/static/common.js"></script>
     {% block script %} {% endblock %}
@@ -26,6 +27,14 @@
     {% block content %}
     {% endblock %}
 </div>
+<script>
+    layui.use(['element'], function () {
+        let element = layui.element;
+        // 监听导航点击
+        element.on('nav(side)', function (elem) {
+        });
+    })
+</script>
 {% block script_body %}
 {% endblock %}
 </body>

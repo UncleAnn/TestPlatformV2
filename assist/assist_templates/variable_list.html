@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+
+{% block title %}变量管理{% endblock %}
+
+{% block script %}
+<script src="/interface/interface_static/interface.js"></script>
+<script src="/assist/assist_static/assist.js"></script>
+{% endblock %}
+
+{% block content %}
+<div id="add-layer" style="display:none">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">产品线</label>
+            <div class="layui-inline">
+                <select name="team-select" id="team-select" lay-filter="team-select"></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">项目</label>
+            <div class="layui-inline">
+                <select name="product-select" id="product-select" lay-filter="product-select"></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">版本号</label>
+            <div class="layui-inline">
+                <select name="version-select" id="version-select" lay-filter="version-select"></select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">变量名</label>
+            <div class="layui-inline">
+                <input type="text" id="variable-input" name="varuable-input" required lay-verify="required"
+                       placeholder="请输入新变量名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">变量值</label>
+            <div class="layui-inline">
+                <input type="text" id="value-input" name="value-input" required lay-verify="required"
+                       placeholder="请输入新变量值" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="layui-col-lg12">
+    <div class="layui-card" style="margin:10px">
+        <!--        <div class="layui-card-header"></div>-->
+        <div class="layui-card-body">
+            <form id="filter" class="layui-form" lay-filter="form">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <select name="team" id="team" lay-filter="team"></select>
+                    </div>
+                    <div class="layui-inline">
+                        <select name="product" id="product" lay-filter="product"></select>
+                    </div>
+                    <div class="layui-inline">
+                        <select name="version" id="version" lay-filter="version"></select>
+                    </div>
+                    <div class="layui-inline">
+                        <input type="text" class="layui-input" placeholder="请输入变量名进行精确/模糊搜索"
+                               name="variable" style="width:400px">
+                    </div>
+                    <div class="layui-inline">
+                        <input type="button" class="layui-btn layui-btn-normal" value="查 询" id="query">
+                        <input type="button" class="layui-btn layui-btn-normal" value="新 增" id="insert">
+                    </div>
+                </div>
+            </form>
+            <table id="variableTable" lay-filter="variableTable"></table>
+            <script type="text/html" id="barLine">
+                <a href="javascript:" lay-event="edit">
+                    <i class="layui-icon layui-icon-edit" style="font-size:25px;color:#FFB800"></i>
+                </a>
+                <a href="javascript:" lay-event="del">
+                    <i class="layui-icon layui-icon-delete" style="font-size:25px;color:#FF5722"></i>
+                </a>
+            </script>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script_body %}
+<script>
+    // 自定义模块，此处只放开soulTable
+    // 第三方模块所在目录{/}意思是代表采用自由路径，即不跟随base路径
+    layui.config({base: '{/}/static/ext/'}).extend({soulTable: 'soulTable'});
+
+    layui.use(['form', 'element', 'layer', 'soulTable', 'table'], function () {
+        let form = layui.form;
+        let element = layui.element;
+        let layer = layui.layer;
+        let soulTable = layui.soulTable;
+        let table = layui.table;
+
+        let table_url = '/assist/api/v2/variable_list';
+        setBreadcrumb('测试辅助', '变量管理');
+        let tableData = load_version_select(form);
+
+        // 创建table实例
+        let tableIns = table.render({
+            elem: '#variableTable',
+            url: table_url,
+            method: 'post',
+            title: '变量列表',
+            limits: [5, 10, 20],
+            where: tableData, // where 接口的初始请求参数
+            toolbar: 'false', //工具栏
+            rowDrag: {
+                trigger: 'row',
+                done: function (obj) { //obj指表格
+                    // 完成时（松开时）触发
+                    // 如果拖动前和拖动后无变化，则不会触发此方法
+                    // console.log('当前行数据', obj.row); // 当前行数据
+                    // console.log('改动后全表数据', obj.cache); // 改动后全表数据
+                    // console.log('原来的数据索引', obj.oldIndex); // 原来的数据索引
+                    // console.log('改动后数据索引', obj.newIndex); // 改动后数据索引
+                }
+            },
+            totalRow: true,
+            page: true,
+            cols: [[ // 定义表头
+                {type: 'checkbox', fixed: 'left', width: 30},
+                {field: '_id', title: 'ID', width: 270, sort: true},
+                {field: 'team', title: '团队', width: 150},
+                {field: 'product', title: '项目', width: 100},
+                {field: 'version', title: '版本号', width: 120},
+                {field: 'variable', title: '变量名', width: 100},
+                {field: 'value', title: '变量值', width: 400},
+                {title: '操作', fixed: 'right', width: 100, align: 'center', toolbar: '#barLine'}
+            ]],
+            done: function () {
+                // 行拖拽之后soulTable渲染
+                soulTable.render(this);
+            },
+            parseData: function (res) {
+                // res为原始返回的数据，需要解析
+                return {
+                    code: res.status, //解析接口状态
+                    msg: res.message, //解析提示文本
+                    count: res.length, //解析数据长度
+                    data: res.data //解析数据列表
+                };
+            }
+        });
+        // 监听版本查询
+        listenTeam(form);
+        listenProduct(form);
+        // 查询
+        $('#query').on('click', function () {
+            tableIns.reload({
+                url: table_url,
+                method: 'post',
+                where: form.val('form')
+            });
+        });
+        // 新增
+        $('#insert').on('click', function () {
+            layer.open({
+                title: '新增变量',
+                type: 1,
+                skin: 'layui-layer-rim', //加上边框
+                area: ['450px', '400px'], //宽高
+                content: $('#add-layer'),
+                method: 'post',
+                btn: ['新增'],
+                yes: function (index, layero) {
+                    let variableInput = $('#variable-input'),
+                        valueInput = $('#value-input');
+                    if (variableInput.val() === '' || valueInput.val() === '') {
+                        layer.msg('变量名或值不能为空！');
+                        return;
+                    }
+                    let data = {
+                        'team': $('#team-select').val(),
+                        'product': $('#product-select').val(),
+                        'version': $('#version-select').val(),
+                        'variable': variableInput.val(),
+                        'value': valueInput.val()
+                    };
+                    // 向服务器发起新增请求
+                    http("/assist/api/v2/add_variable", 'POST', data,
+                        // 新增成功，向服务器请求最新数据并重载表格
+                        function (response) {
+                            layer.msg(response.message);
+                            tableIns.reload({
+                                url: table_url,
+                                method: 'post',
+                                where: form.val('form')
+                            });
+                            variableInput.val('');
+                            valueInput.val('');
+                        },
+                        function (response) { // 请求失败时回调的匿名函数
+                            layer.msg(response.message);
+                        });
+                    //如果设定了yes回调，必须进行手工关闭layer，调试新增时将此行注释
+                    layer.close(index);
+                },
+                success: function (layero, index) {
+                    load_add_layer(form);
+                    // $('#variable-input').val('');
+                    // $('#value-input').val('');
+                }
+            });
+        });
+
+    });
+</script>
+
+
+{% endblock %}

@@ -7,9 +7,13 @@
         let element = layui.element;
         let layer = layui.layer;
         setBreadcrumb('接口测试', '接口编辑');
-        debug_page(form, layer, element);
-        // 加载api信息
+        // edit_page(form, layer, element);
+
+        // 页面初始化部分
+        // 从url获取要读取的api id
         load_interface(form);
+        common_page(form);
+        update(layer);
     });
 </script>
 {% endblock %}

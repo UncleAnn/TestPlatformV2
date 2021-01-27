@@ -2,17 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="231b8bba-5d79-483b-a980-6232fd99fac4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/information/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/information/service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/interface/interface_templates/interface_api.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/interface/interface_templates/interface_edit.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assist/assist_templates/keyword_debug.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assist/assist_templates/keyword_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assist/assist_templates/variable_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/mysql.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assist/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/assist/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assist/assist_static/assist.js" beforeDir="false" afterPath="$PROJECT_DIR$/assist/assist_static/assist.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assist/assist_templates/variable.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/common/mongo.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/mongo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/information/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/information/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/information/service.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/interface/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/interface/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interface/compare.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/interface/interface_static/interface.js" beforeDir="false" afterPath="$PROJECT_DIR$/interface/interface_static/interface.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interface/interface_templates/interface_api.html" beforeDir="false" afterPath="$PROJECT_DIR$/interface/interface_templates/interface_api.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interface/interface_templates/interface_api_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/interface/interface_templates/interface_api_list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/interface/interface_templates/interface_debug.html" beforeDir="false" afterPath="$PROJECT_DIR$/interface/interface_templates/interface_debug.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interface/interface_templates/interface_debug_bak.html" beforeDir="false" afterPath="$PROJECT_DIR$/interface/interface_templates/interface_debug_bak.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interface/interface_templates/interface_debug_bak.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interface/interface_templates/interface_edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/interface/interface_templates/interface_edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interface/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/interface/service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/common.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/common.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
@@ -22,6 +33,9 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="TestPlatformV2" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -43,12 +57,13 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/interface/interface_templates" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\TestPlatformV2\interface\interface_templates" />
+      <recent name="E:\TestPlatformV2\assist\assist_templates" />
       <recent name="E:\TestPlatformV2" />
       <recent name="E:\TestPlatformV2\templates" />
       <recent name="E:\TestPlatformV2\static\imgs" />
@@ -66,7 +81,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.__init__">
+  <component name="RunManager" selected="Python.run">
     <configuration name="__init__" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="TestingPlatform" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -133,6 +148,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="mysql" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="TestingPlatform" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/common" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/common/mysql.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="TestingPlatform" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -155,28 +192,9 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Unittests in E:/TestPlatformV2/lianxi2.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <module name="TestingPlatform" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/lianxi2.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.run" />
-        <item itemvalue="Python.__init__" />
-        <item itemvalue="Python.mongo" />
-        <item itemvalue="Python.compare" />
-        <item itemvalue="Python tests.Unittests in E:/TestPlatformV2/lianxi2.py" />
       </list>
     </recent_temporary>
   </component>
@@ -196,8 +214,29 @@
       <workItem from="1606788008449" duration="22490000" />
       <workItem from="1606873177323" duration="68811000" />
       <workItem from="1607221006490" duration="2545000" />
-      <workItem from="1607312469679" duration="5725000" />
+      <workItem from="1607312469679" duration="108554000" />
+      <workItem from="1608034812951" duration="24409000" />
+      <workItem from="1608775480293" duration="16183000" />
+      <workItem from="1609744564983" duration="5568000" />
+      <workItem from="1610012277859" duration="20368000" />
+      <workItem from="1610935820515" duration="8184000" />
+      <workItem from="1611041904510" duration="1269000" />
+      <workItem from="1611043412659" duration="295000" />
+      <workItem from="1611043715509" duration="1641000" />
+      <workItem from="1611045486739" duration="1205000" />
+      <workItem from="1611060019928" duration="983000" />
+      <workItem from="1611066683884" duration="7275000" />
+      <workItem from="1611150041929" duration="1413000" />
+      <workItem from="1611204973752" duration="38853000" />
     </task>
+    <task id="LOCAL-00001" summary="20201208">
+      <created>1607441296146</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1607441296146</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -216,13 +255,11 @@
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="20201208" />
+    <option name="LAST_COMMIT_MESSAGE" value="20201208" />
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/TestPlatformV2$run.coverage" NAME="run Coverage Results" MODIFIED="1607051910403" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/TestPlatformV2$Unittests_for_lianxi2_Foo.coverage" NAME="Unittests for lianxi2.Foo Coverage Results" MODIFIED="1606739288854" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/TestPlatformV2$Unittests_in_lianxi2_py.coverage" NAME="Unittests in lianxi2.py Coverage Results" MODIFIED="1606739471718" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/TestPlatformV2$compare.coverage" NAME="compare Coverage Results" MODIFIED="1606824620248" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/interface" />
-    <SUITE FILE_PATH="coverage/TestPlatformV2$mongo.coverage" NAME="mongo Coverage Results" MODIFIED="1607012444516" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/common" />
-    <SUITE FILE_PATH="coverage/TestPlatformV2$page_debug.coverage" NAME="page_debug Coverage Results" MODIFIED="1606532729302" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/TestPlatformV2$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1607020109964" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/common" />
+    <SUITE FILE_PATH="coverage/TestPlatformV2$run.coverage" NAME="run Coverage Results" MODIFIED="1611584015323" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

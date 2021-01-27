@@ -2,28 +2,28 @@
 
 
 {% block script %}
-    <script src="/interface/interface_static/interface.js"></script>
+<script src="/interface/interface_static/interface.js"></script>
 {% endblock %}
 {% block style %}
-    <style>
-        .choice {
-            width: 80px
-        }
+<style>
+    .choice {
+        width: 80px
+    }
 
-        .action {
-            width: 80px
-        }
+    .action {
+        width: 80px
+    }
 
-        a > .layui-icon {
-            font-size: 30px;
-            color: #FF5722;
-        }
+    a > .layui-icon {
+        font-size: 30px;
+        color: #FF5722;
+    }
 
-        .result > i {
-            font-size: 40px;
-        }
+    .result > i {
+        font-size: 40px;
+    }
 
-    </style>
+</style>
 {% endblock %}
 
 
@@ -47,8 +47,8 @@
                         </select>
                     </div>
                     <div class="layui-inline" style="width:480px">
-                        <input type="text" id="title" class="layui-input" required
-                               layui-verify="required" placeholder="请输入接口标题">
+                        <input type="text" id="title" class="layui-input" required lay-verify="required"
+                               placeholder="请输入接口标题" name="title">
                     </div>
                     <div class="layui-inline">
                         <input type="button" id="send" value="SEND" class="layui-btn layui-btn-normal action">
@@ -58,7 +58,7 @@
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-inline" style="width:100px">
-                        <select name="method" id="method" layui-filter="method">
+                        <select name="method" id="method" lay-filter="method">
                             <option value="GET" selected>GET</option>
                             <option value="POST">POST</option>
                             <option value="PUT">PUT</option>
@@ -66,8 +66,8 @@
                         </select>
                     </div>
                     <div class="layui-inline" style="width:600px">
-                        <input type="text" id="url" class="layui-input" required
-                               layui-verify="required" placeholder="请输入接口请求地址">
+                        <input type="text" id="url" class="layui-input" required name="url"
+                               lay-verify="required" placeholder="请输入接口请求地址">
                     </div>
                     <div class="layui-inline layui-btn-group">
                         <input type="button" id="add-header" value="header" class="layui-btn choice">
@@ -174,7 +174,7 @@
                                     <input type="checkbox" class="extract-switch" lay-skin="switch" checked>
                                 </div>
                                 <div class="layui-inline" style="width: 400px">
-                                    <input type="text" class="layui-input extract-name" layui-verify="required"
+                                    <input type="text" class="layui-input extract-key" layui-verify="required"
                                            placeholder="请输入变量名">
                                 </div>
                                 <div class="layui-inline" style="width: 400px">
@@ -202,4 +202,5 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
